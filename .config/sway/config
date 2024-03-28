@@ -1,0 +1,186 @@
+# ------ Sway ------ #
+
+# ------ Variables ------ #
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+set $browser brave
+set $filemng thunar
+set $screenshot bash ~/.config/scripts/screenshot.sh
+set $term alacritty
+set $menu rofi -show drun
+set $powermenu ~/.config/scripts/power-menu.sh
+
+# ------ Effects ------ #
+blur disable
+#corner_radius 8
+shadows enable
+layer_effects "waybar" shadows enable;
+
+# Launch
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Catppuccin-Mocha-Standard-Blue-Dark'
+    gsettings set $gnome-schema icon-theme 'Papirus-Dark'
+    gsettings set $gnome-schema cursor-theme 'Fluent-dark-cursors'
+    gsettings set $gnome-schema font-name 'Cantarell 12'
+}
+
+exec /usr/libexec/polkit-gnome-authentication-agent-1 & 
+exec mako &
+
+# Output/Input
+output * bg /usr/share/wallpapers/cat_leaves.png fill
+#output VGA-1 mode 1440x900@75Hz
+input "type:pointer" accel_profile flat
+input type:keyboard {
+  xkb_layout latam,us    
+}
+
+# ------ Keybindings ------ #
+
+    # Terminal
+    bindsym $mod+Return exec $term
+
+    # Kill window
+    bindsym $mod+q kill
+
+    # Menu
+    bindsym $mod+m exec $menu
+
+    # File manager
+    bindsym $mod+e exec $filemng
+
+    # VS Code
+    bindsym $mod+Shift+v exec vscodium
+
+    # Browser
+    bindsym $mod+b exec $browser
+
+    # Screenshot
+    bindsym $mod+Shift+s exec $screenshot
+
+    # Mouse button for dragging.
+    floating_modifier $mod normal
+
+    # Reload config
+    bindsym $mod+Control+r Reload
+
+    # Keyboard layout
+    bindsym $mod+Shift+Space input type:keyboard xkb_switch_layout next
+
+    # Powermenu
+    bindsym $mod+Shift+q exec $powermenu
+
+# ------ Volume ------ #
+
+    # Volume script
+    set $volume python3 ~/.config/scripts/volume.py
+
+    # Pamixer
+    bindsym $mod+F9 exec pamixer --mute && $volume
+    bindsym $mod+F10 exec pamixer --decrease 5 && $volume
+    bindsym $mod+F11 exec pamixer --increase 5 && $volume
+    bindsym $mod+F12 exec pamixer --unmute && $volume
+
+# ------ Music ------ #
+
+    # Playerctl
+    bindsym $mod+F7 exec playerctl play
+    bindsym $mod+F6 exec playerctl pause
+    bindsym $mod+F5 exec playerctl previous
+    bindsym $mod+F8 exec playerctl next
+
+# ------ Windows ------ #
+
+    # Focus using
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+
+    # Move windows
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+
+# ------ Workspaces ------ #
+
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+
+# ------ Layouts ------ #
+
+    # Default layout
+    workspace_layout default
+
+    # Layouts
+    bindsym $mod+p splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    #bindsym $mod+s layout stacking
+    bindsym $mod+t layout tabbed
+    bindsym $mod+u layout toggle split
+
+    # Toggle fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle floating
+    bindsym $mod+Shift+f floating toggle
+
+    # Swap focus
+    bindsym $mod+space focus mode_toggle
+
+    # Focus parent window
+    bindsym $mod+a focus parent
+
+# ------ Scratchpad ------ #
+
+    # Minimize window
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Maximize window
+    bindsym $mod+minus scratchpad show
+
+# ------ Resizing containers ------ #
+
+    # Resize window
+    bindsym $mod+Control+$left resize grow left 30px
+    bindsym $mod+Control+$down resize grow down 30px
+    bindsym $mod+Control+$up resize grow up 30px
+    bindsym $mod+Control+$right resize grow right 30px
+
+# ------ Borders ------ #
+default_border pixel 1
+default_floating_border pixel 1
+gaps inner 8
+
+#client.<class>          <border>    <background>   <text>      <indicator>   <child_border> 
+client.focused           "#2c2c2c"   "#dddfe2"      "#000000"   "#8598d7"     "#8598d7"
+
+client.focused_inactive  "#23242a"   "#ffffff"      "#000000"   "#202020"     "#202020"
+
+client.unfocused         "#666666"   "#fff5e5"      "#000000"   "#202020"     "#202020"
+
+# ------ Status Bar ------ #
+bar { 
+     swaybar_command waybar
+}
+
+include /etc/sway/config.d/*

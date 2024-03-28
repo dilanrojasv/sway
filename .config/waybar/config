@@ -1,0 +1,104 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 46,
+    "spacing": 0,
+    "modules-left": [
+        "custom/logo",
+        "sway/workspaces",
+    ],
+    "modules-center": [
+        "clock",
+    ],
+    "modules-right": [
+        "sway/scratchpad",
+        "tray",
+        "sway/language",
+        "pulseaudio",
+        "network",
+        "custom/power",
+    ],
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "warp-on-scroll": false,
+        "format": " {name} {icon} ",
+        "format-icons": {
+            "1": " ",
+            "2": " ",
+            "3": " ",
+            "4": " ",
+            "5": " ",
+            "urgent": "",
+            //"focused": "",
+            "default": ""
+        }
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", "  "],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
+    },
+    "sway/language": {
+  	  "format": "    {short}",
+      "tooltip": false,
+      "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
+    },
+    "clock": {
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "format-alt": "   {:%d de %B, %Y}",
+        "format": "   {:%I:%M %p}"
+    },
+    "network": {
+        "format-wifi" : " {icon} ",
+        "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"],
+        "format-ethernet": "󰀂",
+        "format-disconnected" : " 󰖪 ",
+	      "tooltip-format-wifi": "{icon}  {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+        "tooltip-format-ethernet": "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+      	"tooltip-format-disconnected": "Disconnected",
+      	"on-click": "alacritty -e nmtui",
+      	"interval": 5,
+      	"nospacing": 1,
+    },
+    "pulseaudio": {
+        "format": " {icon} ",
+        "format-bluetooth": "󰂰",
+        "nospacing": 1,
+        "tooltip": false,
+        "format-muted": " 󰝟 ",
+        "format-icons": {
+            "headphone": "",
+            "default": ["󰕿","󰖀","󰕾"]
+        },
+        "on-click": "pamixer -t && python3 ~/.config/scripts/volume.py",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "pamixer --increase 5 && python3 ~/.config/scripts/volume.py &",
+        "on-scroll-down": "pamixer --decrease 5 && python3 ~/.config/scripts/volume.py &",
+        "scroll-step": 5
+    },
+    "custom/power": {
+        "format": " 󱐋 ",
+        "tooltip": false,
+        "on-click": "~/.config/scripts/power-menu.sh",
+    },
+    "custom/logo": {
+        "format": "󰌽 ",
+        "tooltip": false,
+        "on-click": "rofi -show drun",
+    },
+    "custom/spotify": {
+        "exec": "/usr/bin/python3 ~/.config/scripts/mediaplayer.py --player spotify",
+        "format": "{}  ",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
+    },
+}
